@@ -190,11 +190,11 @@ function initDataFormat(data) {
   let xmax = d3.max(lngs);
   let ymin = d3.min(lats);
   let ymax = d3.max(lats);
-  console.log(datar)
-  console.log(ymin)
-  console.log(xmin)
-  console.log(ymax)
-  console.log(xmax)
+  // console.log(datar)
+  // console.log(ymin)
+  // console.log(xmin)
+  // console.log(ymax)
+  // console.log(xmax)
 
   CONFIG.homebounds = [[ymin, xmin],[ymax, xmax]];
 
