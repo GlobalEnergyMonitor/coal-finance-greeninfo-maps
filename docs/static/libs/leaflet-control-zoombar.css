@@ -1,0 +1,21 @@
+.gin-control-zoom {
+}
+
+.leaflet-touch .leaflet-bar a.gin-control-zoom-in, 
+.leaflet-touch .leaflet-bar a.gin-control-zoom-out {
+    width: 37px;
+    height: 37px;
+    line-height: 1.3;
+	font: bold 25px 'Lucida Console', Monaco, monospace;
+}
+
+.leaflet-touch .leaflet-bar a.gin-control-zoom-home {
+    width: 37px;
+    height: 37px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+

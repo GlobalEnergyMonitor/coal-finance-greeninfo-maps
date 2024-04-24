@@ -1,0 +1,831 @@
+/* 
+ * SASS Modules
+ */ 
+
+@use "sass:math";
+
+
+
+/*
+ * VARIABLES
+ */
+
+/* manage global CSS vars here */
+
+
+/* colors */
+$highlight-color: #f2e360;
+$blue: #14284b; /* header color */
+$targetcolor: #00b9f1; /* blue circle color */
+$sourcecolor: #ef572e; /* red circle color */
+$sourcecolor-hover: #d93b11;
+$search-button-color: #6c6c6c;
+$country-color: #ff605c;
+
+/* sidebar */
+$sidebarwidth: 415px;
+
+/* additional symbol styles for lines and circles */
+$lineopacity: 0.8;
+$linewidth: 3;
+$linewidth_mobile: $linewidth + 2;
+$circlesize: 12;
+$circlesize_mobile: $circlesize + 2;
+$circleopacity: 0.85;
+
+/* 
+ * IMPORTS
+ */
+
+
+/* 
+ * EXPORTS
+ */
+
+/* export any variables also used in JavaScript here. 
+   Dividing by units, makes them unitless (but always strings) */
+:export {
+  sourcecolor: $sourcecolor;
+  sourcecolor_light: lighten($sourcecolor, 40%);
+  targetcolor: $targetcolor;
+  targetcolor_light: lighten($targetcolor, 40%);
+  countrystyle: $country-color;
+  sidebarwidth: math.div($sidebarwidth, 1px);
+  lineopacity: $lineopacity;
+  linewidth: $linewidth;
+  linewidth_mobile: $linewidth_mobile;
+  circlesize: $circlesize;
+  circlesize_mobile: $circlesize_mobile;
+  circleopacity: $circleopacity;
+  highlight_color: $highlight-color;
+}
+
+/* GENERAL PAGE ELEMENTS */
+
+* { padding: 0; margin: 0; outline: 0; }
+/* hide overflow, otherwise d3 Rs will cause scroll bars */
+html, body { 
+  padding: 0; margin: 0;
+  height: 100%; 
+  font-family: 'Open Sans', sans-serif; 
+  overflow: hidden;
+}
+
+div#container {
+  height: 100%;
+}
+
+/* some utility definitions */
+.right  { text-align:right; }
+.left   { text-align:left; }
+.center { text-align:center; }
+
+
+/* THE MAP AND MAP CONTROLS/PANELS */
+
+div#map {
+  height: 100%;
+}
+
+/* SEARCH */
+div#search-wrapper {
+  z-index: 9999;
+  
+  position: absolute;
+  left: $sidebarwidth + 10;
+  top: 10px;
+
+  input {
+    width: 300px;
+    font-size: 14px;
+    border-radius: 0;
+    padding: 4px 29px 4px 11px;
+  }
+  
+  ul.typeahead__list>.typeahead__group:first-child, 
+  ul.typeahead__list>li.typeahead__group+li.typeahead__item {
+    border-color: #dadfe6;
+  }
+
+  ul.typeahead__list>.typeahead__group.active>a, 
+  ul.typeahead__list>.typeahead__group>a, 
+  ul.typeahead__list>.typeahead__group>a:focus, 
+  ul.typeahead__list>.typeahead__group>a:hover {
+    background: #dadfe6;
+    color: #555;
+    font-weight: normal;
+  }
+
+  ul.typeahead__list {
+    max-height: 540px;
+    overflow-y: auto;
+    z-index: 3000;
+  }
+
+  ul.typeahead__list, ul.typeahead__dropdown {
+    padding: 0;
+    border-radius: 0;
+    font-size:15px;
+  }
+
+  div.typeahead__field {
+    z-index: 3001;
+  }
+
+  ul.typeahead__dropdown li:last-child {
+    padding-top: 0;
+  }
+
+  span.typeahead__cancel-button {
+    font-size: 18px;
+    line-height: 1;
+    right:3px;
+  }
+
+  div.typeahead__button {
+    font-size: 16px;
+  
+    button {
+      background: $search-button-color;
+      border-radius: 0;
+      border-color: $search-button-color;
+      max-height: 38px;
+  
+      span.typeahead__search-icon {
+        background: none;
+        padding: 0;
+        background: $search-button-color;
+        &:before {
+          display: inline-block;
+          font-style: normal;
+          font-variant: normal;
+          text-rendering: auto;
+          -webkit-font-smoothing: antialiased;
+          font-family: "Font Awesome 5 Pro"; 
+          font-weight: 900; 
+          content: "\f002";
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+// Show/hide toggles on the chart and filter panels
+div.panel-toggle {
+  font-size: 14px;
+  width: 100%;
+  text-align: right;
+
+  span {
+    color: #fff;
+    cursor: pointer;
+    background: #6c6c6c;
+    display: inline-block;
+    padding: 4px 10px;
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+}
+
+// Data filters
+div#filter-outer {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: auto;
+  height: auto;
+  z-index: 9999;
+  background: #9e9e9e;
+
+  div#select-wrapper {
+    background: #fff;
+    height: auto;
+    padding: 5px 1em 5px;
+    font-size: 13px;
+
+    div.select-column {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+    }
+
+    div.select-wrapper-single {
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    select#era-select {
+      width: 140px;
+    }
+
+    div#units-select-wrapper {
+      select#units-select {
+        width: 100px;
+      }
+    }
+
+    div#close_year-wrapper {
+      margin-left: 15px;
+      select#close_year {
+        width: 107px;
+      }
+    }      
+
+    select#finance_type {
+      width: 260px;
+    }
+
+    select#financer_type {
+      width: 260px;
+    }
+
+    select#domestic_international {
+      width: 260px;
+    }
+  }
+
+  div#reset {
+    font-size: 13px;
+    color: #fff;
+    text-align: center;
+    display: flex;
+    justify-content: center;  
+    span {
+      cursor: pointer;  
+      display: inline-block;
+      background: #6c6c6c;
+      padding: 4px 8px;
+    }
+  }
+}
+
+
+/* PIE CHART ON MAP */
+
+div#chart-wrapper {
+  position: absolute;
+  left: $sidebarwidth + 10;
+  bottom: 15px;
+  z-index: 9997;
+  background: rgb(158 158 158);
+
+  div#chart {
+    width: 270px;
+    height: 300px;
+  }
+}
+
+
+/* SELECT 2 OVERRIDES */
+
+span.select2-dropdown.era-type-select2 {
+  z-index: 10001;
+  font-size: 13px;
+}
+
+span.select2-dropdown.units-type-select2 {
+  z-index: 10003;
+  font-size: 13px;
+}
+
+
+span.select2-dropdown.close-year-select2 {
+  z-index: 10005;
+  font-size: 13px;
+}
+
+
+span.select2-dropdown.financer-type-select2 {
+  z-index: 10010;
+  font-size: 13px;
+}
+
+span.select2-dropdown.domestic-intl-select2 {
+  z-index: 10020;
+  font-size: 13px;
+}
+
+span.select2-container--default span.select2-selection--multiple, 
+span.select2-container--default span.select2-selection--single {
+  border-radius: 0;
+}
+
+.select2-container .select2-selection--single button.select2-selection__clear {
+  font-size: 20px;
+  margin-top: -5px;
+}
+
+/* BS 5 OVERRIDES */
+label.form-label {
+  display: block;
+  margin-bottom: 0;
+}
+
+/* MAP TOOLTIPS */
+div.map-tooltip {
+  background: #fff;
+  padding: 3px 5px;
+  font-size: 11px;
+  position: absolute;
+  visibility: hidden;
+  z-index: 10000;
+  box-shadow: 0px 1px 5px rgba(0,0,0,0.65);
+  overflow: hidden;
+  white-space: nowrap;
+  top: 100px;
+  left: 200px;
+}
+
+/* MAP LEGENDS */
+
+// this one is for the big country circles
+svg.legend {
+  position: absolute;
+  bottom: 15px;
+  right: 50px;
+  z-index: 2201;
+}
+
+// this one is for the project circles
+// only shows on a recipient country map
+div#country-legend {
+  position: absolute;
+  right: 153px;
+  bottom: 27px;
+  z-index: 999;
+  padding: 6px 10px 2px;
+
+  background: rgba(255,255,255,0.7);
+
+  div.country-legend-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 4px;
+
+    div.country-circle {
+      margin-right: 4px;
+      border-radius: 50%;
+      height: 15px;
+      width: 15px;
+
+      &.source {
+        background-color: $sourcecolor;
+      }
+      &.target {
+        background-color: $targetcolor;
+      }
+    }
+  }
+}
+
+
+/* INFO ICONS */
+div.info-icon-wrap {
+  display: inline-block;
+  margin-left: 5px;
+  cursor: pointer;
+  i {
+    top: -5px;
+    position: relative;
+    font-size: 14px;
+    &:hover {
+      top: -6px;
+    }
+  }
+}
+
+div#select-wrapper {
+  div.info-icon-wrap {
+    margin-left: 2px;
+    i {
+      font-size: 12px;
+      top: -2px;
+      &:hover {
+        top: -3px;
+      }
+    }
+  }
+}
+
+
+/*
+ * THE LEFT PANEL SIDEBAR
+ */
+
+div#sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 22500;
+
+  width: $sidebarwidth;
+  height: 100%; /* set dynamically on resize() */
+  overflow-x: hidden;
+  overflow-y: hidden;
+
+  background: #fff;
+  color: #fff;
+
+  /* animation settings */
+  -webkit-transition: left 300ms ease;
+  -moz-transition: left 300ms ease;
+  -ms-transition: left 300ms ease;
+  -o-transition: left 300ms ease;
+  transition: left 300ms ease;
+
+
+  div.back-wrapper {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    div.back {
+      display: none; // show only on single country view
+      margin-right: 5px;
+      a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-transform: uppercase;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: bold;
+        color: #000;
+        text-shadow: none;
+        opacity: 0.4;
+        text-decoration: none;
+        &:hover {
+          text-decoration: none;
+          opacity: 0.9;
+          cursor: pointer;
+        }
+        i {
+          font-size: 24px;
+          margin-right: 5px;
+        }
+      }
+    }
+
+    a.close {
+      display: none; /* only shows on mobile */
+      position: relative;
+      top: -18px;
+      right: -3px;
+      font-size: 35px;
+      text-decoration: none;
+      float: none;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: bold;
+      // line-height: 18px;
+      color: #000;
+      text-shadow: none;
+      opacity: 0.35;
+      filter: alpha(opacity=50);
+      text-decoration: none;
+      &:hover {
+        opacity: 0.9;
+        filter: alpha(opacity=70);
+        cursor: pointer;
+      }
+    }
+  }
+
+  div.sidebar-content {
+    color: #444;
+    background: #fff;
+
+    div.results {
+      div.row {
+        margin-left: 0;
+        margin-right: 0;
+        div.chartrow {
+          cursor: pointer;
+          div.bar {
+            height: 11px;
+            display: inline-block;
+            position: relative;
+            top: 1px;
+          }
+          div.bar.source {
+            background: $sourcecolor;
+            &.cancelled::before {
+              content: '×';
+              color: $sourcecolor;
+              font-weight: 600;
+              font-size: 24px;
+              line-height: 10px;
+              position: relative;
+              top: 2px;
+            }
+          }
+          div.bar.target {
+            background: $targetcolor;
+            &.cancelled::before {
+              content: '×';
+              color: $targetcolor;
+              font-weight: 600;
+              font-size: 24px;
+              line-height: 10px;
+              position: relative;
+              top: 2px;
+            }
+          }
+          &:hover:not(.no-hover) > div.bar.source {
+            background: $sourcecolor-hover;
+          }
+          &:hover:not(.no-hover) > div.bar.target {
+            background: darken($targetcolor, 10%)
+          }
+          &:hover:not(.no-hover) > div.units-label, 
+          &:hover:not(.no-hover) > div.name-label {
+            color: #222;
+          }
+          div.units-label {
+            color: #555;
+            display: inline-block;
+            margin-left: 5px;
+            &.cancelled {
+              margin-left: 17px;
+            }
+          }
+          div.name-label {
+            color: #888;
+            margin-top: -1px;
+            margin-bottom: 2px;
+            line-height: 1.25;
+          }
+        }
+        div.chartrow.no-hover {
+          cursor: default;
+        }
+      }
+    }
+
+    div#global-content {
+      width: $sidebarwidth - 30;
+      position: absolute;
+      top: 15px; left: 15px;
+
+      div.source-panel {
+        div.results {
+          width: $sidebarwidth - 18;
+          height: calc(50vh - 55px);
+          overflow-y: auto;
+        }
+      }
+
+      div.target-panel {
+        border-top: 1px solid #ccc;
+        margin-top: 1em;
+        padding-top: 0.5em;
+        div.results {
+          width: $sidebarwidth - 18;
+          height: calc(50vh - 60px);
+          overflow-y: auto;
+        }
+      }
+
+      div.country-title {
+        display: none;
+        color: #fff;
+        margin-top: -15px; 
+        margin-left: -15px;
+        margin-bottom: 15px;
+        padding: 5px 30px 8px 15px;
+        div.name {
+          font-size: 20px;
+          margin-bottom:-3px;
+        }
+        div.country-label {
+          font-size: 15px;
+        }
+      }
+
+      div.title {
+        h3 {
+          font-size: 20px;
+          margin-top: 5px;  
+        }
+      }
+      div.title-legend {
+        border-radius: 50%;
+        width: 20px; height: 20px;
+        float: left;
+        margin-right: 8px;
+        margin-top: 2px;
+      }
+      div.title-legend.red { background: $sourcecolor; }
+      div.title-legend.blue { background: $targetcolor;  }
+
+    } /* global-content */
+
+
+    div#country-content {
+      width: $sidebarwidth - 15;
+      display: none;
+      position: absolute;
+      top: 15px; left: 15px;
+
+      div.institutions {
+        div.results {
+          width: $sidebarwidth - 18;
+          height: calc(50vh - 85px);
+          overflow-y: auto;
+        }
+      }
+
+      div.projects {
+        border-top: 1px solid #ccc;
+        margin-top: 1em;
+        padding-top: 0.5em;
+        div.results {
+          width: $sidebarwidth - 18;
+          height: calc(50vh - 98px);
+          overflow-y: auto;
+
+          // units panels
+          div#units-wrapper {
+            // border: 1px solid $targetcolor;
+            // padding: 0 1em 1em;
+            // border-radius: 10px;
+            margin-top: 10px; 
+            margin-right: 30px;
+
+            h5 {
+              font-size: 1rem; 
+              margin-top: 8px; 
+            }
+
+            div.unit-details {
+              margin-bottom: 10px;
+              border: 1px solid #00b9f1;
+              padding: 0.5em 1em;
+              border-radius: 6px;
+              font-size: 15px;
+              a {
+                font-weight: 700;
+              }
+            }
+          }
+        }
+      }
+
+      div.title {
+        h3 {
+          font-size: 20px;
+          margin-top: 5px;  
+        }
+      }
+
+      div.title-wrapper {
+        margin-top: -15px; 
+        margin-left: -15px;
+        margin-bottom: 15px;
+        div.country-title {
+          display: inline-flex;
+          flex-direction: column;
+          color: #fff;
+          padding: 5px 30px 8px 15px;
+          max-width: 318px;
+
+          div.name {
+            font-size: 20px;
+            margin-bottom:-3px;
+            line-height: 1.2;
+          }
+          div.country-label {
+            font-size: 15px;
+            margin-top: 5px;
+          }
+        }
+      }
+
+      div.projects {
+        margin-top: 0.5em;
+        padding-top: 0.5em;
+        border-top: 1px solid #ccc;
+      }
+
+    } /* country-content */
+
+
+
+  } /* sidebar-content */
+
+}
+
+div#sidebarHamburger {
+  position:absolute; 
+  left: 10px; 
+  top: 10px;
+  z-index: 2499; /* or else it falls behind the map */
+  border-radius: 5px;
+  box-shadow: 0px 1px 5px rgba(0,0,0,0.65);
+  background-color: #fff;
+}
+div#sidebarHamburger a {
+  font-size: 22px;
+  line-height: 22px;
+  padding: 4px 8px;
+  display: inline-block;
+  color: #666;
+    &:hover {
+      background-color: #f4f4f4;
+      border-radius:5px;
+    }
+}
+
+div.sidebarHamburger a i.fa {
+  vertical-align: middle;
+}
+
+/* Sankey: Nodes and Links styles */
+circle.source, circle.target {
+  cursor: pointer;
+  pointer-events: all;
+  opacity: 1;
+}
+circle.source:hover {
+  fill: $sourcecolor-hover !important;
+}
+circle.target:hover {
+  fill: darken($targetcolor, 10%) !important;
+}
+
+path.link {
+  pointer-events: visibleStroke !important;
+  cursor: crosshair !important;
+  fill: none;
+  stroke: #333;
+  stroke-opacity: 0.5;
+  stroke-linecap: round;
+  cursor: pointer;
+}
+path.link:hover {
+  stroke-opacity: 0.8;
+}
+
+path.link.light {
+  pointer-events: visibleStroke !important;
+  stroke: #000;
+  stroke-opacity: 0.1;
+}
+path.link.light:hover {
+  stroke-opacity: 0.4;
+}
+
+/* BOOTSTRAP OVERRIDES */
+div.container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* SWEET ALERT OVERRIDES */
+.swal-overlay { z-index: 100000; }
+.swal-button { background-color: #307697; }
+
+/* MEDIA QUERIES */
+
+/* styles specific to smaller screens: applies below this width (less or equal to); */
+@media screen and (max-width: 835px) {}
+
+@media screen and (max-width: 810px) {}
+
+@media screen and (max-width: 768px) {
+
+  div#sidebar { width: 100%; overflow-x: hidden; }
+
+  div#sidebar div.back-wrapper a.close { display: block; }
+
+  div#sidebar div.sidebar-content div.results div.row div.chartrow div.name-label {
+    width:80%;
+  }
+
+  // no chart on mobile, too many conflicts
+  div#chart-wrapper {
+    display: none;
+  }
+
+  // no search on mobile, too many conflicts
+  div#search-wrapper {
+    display: none;
+  }
+
+}
+
+
+@media screen and (max-width: 500px) {}
+
+@media screen and (max-width: 400px) {}
+
+@media screen and (max-width: 374px) {}
+
+@media screen and (max-width: 325px) {}
