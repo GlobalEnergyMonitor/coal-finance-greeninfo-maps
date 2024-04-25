@@ -1622,13 +1622,17 @@ function createNodes(links) {
       country_data.forEach(function(d) {
         if (CONFIG.units == "megawatts" && units.indexOf(d.unit) > -1) return; 
         units.push(d.unit); // track that we've recorded this one
+        console.log(source)
+        // console.log(unit)
+        console.log(units)
         total_flow += d[CONFIG.units];
+        console.log(total_flow)
       });
 
       // stamp the feature with this total flow, and push it to the collection of nodes
       feature.properties.aggregate_outflows = total_flow;
       feature.properties.flow = total_flow; // keep a copy for calculating global min/max flow
-
+      console.log(total_flow)
       nodes.push(feature);
       source_countries.push(source); // note that we're done with this one 
     }
@@ -1671,7 +1675,7 @@ function createNodeFeature(d, type) {
   let coordsfield = type == "source" ? "source_coords" : "target_coords";
   let lat, lng;
   if (type == "source") {
-    lat = d.source_coords[0];
+    lat = d.source_coords[0]; 
     lng = d.source_coords[1];
     countryfield = "source";
   } else {
