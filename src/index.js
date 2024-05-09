@@ -47,12 +47,12 @@ CONFIG.sidebarwidth = styles.sidebarwidth * 1; // cast as number
 
 // Pie chart colors
 CONFIG.piechart_colors = {
-  // "Privately-owned commercial institution": "#7a9e9f",
-  // "Governmental policy institution": "#eef5db",
-  // "Government-owned commercial institution": "#4f6367",
-  // // "To be determined": "#90ed7d",
-  // "Joint venture": "#90ed7d",
-  // "Unknown": "#cecece",
+  "Privately-owned commercial institution": "#7a9e9f",
+  "Governmental policy institution": "#eef5db",
+  "Government-owned commercial institution": "#4f6367",
+  // "To be determined": "#90ed7d",
+  "Joint venture": "#90ed7d",
+  "Unknown": "#cecece",
 }
 
 CONFIG.format = {
@@ -1622,17 +1622,17 @@ function createNodes(links) {
       country_data.forEach(function(d) {
         if (CONFIG.units == "megawatts" && units.indexOf(d.unit) > -1) return; 
         units.push(d.unit); // track that we've recorded this one
-        console.log(source)
+        // console.log(source)
         // console.log(unit)
-        console.log(units)
+        // console.log(units)
         total_flow += d[CONFIG.units];
-        console.log(total_flow)
+        // console.log(total_flow)
       });
 
       // stamp the feature with this total flow, and push it to the collection of nodes
       feature.properties.aggregate_outflows = total_flow;
       feature.properties.flow = total_flow; // keep a copy for calculating global min/max flow
-      console.log(total_flow)
+      // console.log(total_flow)
       nodes.push(feature);
       source_countries.push(source); // note that we're done with this one 
     }
