@@ -47,12 +47,12 @@ CONFIG.sidebarwidth = styles.sidebarwidth * 1; // cast as number
 
 // Pie chart colors
 CONFIG.piechart_colors = {
-  "Privately-owned commercial institution": "#7a9e9f",
-  "Governmental policy institution": "#eef5db",
-  "Government-owned commercial institution": "#4f6367",
-  // "To be determined": "#90ed7d",
-  "Joint venture": "#90ed7d",
-  "Unknown": "#cecece",
+  // "Privately-owned commercial institution": "#7a9e9f",
+  // "Governmental policy institution": "#eef5db",
+  // "Government-owned commercial institution": "#4f6367",
+  // // "To be determined": "#90ed7d",
+  // "Joint venture": "#90ed7d",
+  // "Unknown": "#cecece",
 }
 
 CONFIG.format = {
@@ -90,7 +90,7 @@ CONFIG.first_load = true;
 $(document).ready(function () {
 
   // data initialization first, then the remaining init steps
-  Promise.all([initData('./data/data.csv'), initData('./data/countries.json')])
+  Promise.all([initData('./data/map_file_gcpft2024-05-08.csv'), initData('./data/countries.json')])
     .then(function(data) {
       initDataFormat(data);    // get data ready for use
       initLeafletShims();      // Leaflet extensions and shims
