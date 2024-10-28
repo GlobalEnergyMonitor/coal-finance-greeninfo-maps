@@ -90,7 +90,7 @@ CONFIG.first_load = true;
 $(document).ready(function () {
 
   // data initialization first, then the remaining init steps
-  Promise.all([initData('./data/map_file_gcpft2024-05-08.csv'), initData('./data/countries.json')])
+  Promise.all([initData('./data/coal-finance-gi-map 2024-10-28.csv'), initData('./data/countries.json')])
     .then(function(data) {
       initDataFormat(data);    // get data ready for use
       initLeafletShims();      // Leaflet extensions and shims
@@ -146,7 +146,7 @@ function initDataFormat(data) {
     let params = new URLSearchParams(window.location.search)
     let country = params.get('country');
     if (country) {
-      let datar = data.data.filter(function(d) { return d.source == country && d.era == "financing" });
+      let datar = data.data.filter(function(d) { return d.source == country && d.fin_status == "financing" });
       data.data = datar;
     }
   }
@@ -154,7 +154,7 @@ function initDataFormat(data) {
   // check for data to skip
   let rawdata = [], years = [], finance_types = [];
   data.data.forEach(function(d) {
-    if (! d.era ) return; 
+    if (! d.fin_status ) return; 
     if (! d.target_lat || isNaN(d.target_lat)) return;
     if (! d.target_lng || isNaN(d.target_lng)) return;
     if (! d.source_lat || isNaN(d.source_lat)) return;
@@ -171,15 +171,15 @@ function initDataFormat(data) {
     rawdata.push(d);
 
     // collect close year for use in a year filter
-    // NOTE: year filter is disabled unless era = 'closed'
-    if (d.era == "closed") years.push(d.close_year);
+    // NOTE: year filter is disabled unless fin_status = 'closed'
+    if (d.fin_status == "closed") years.push(d.close_year);
   });
 
   // keep a reference to this geojson in DATA
   DATA.rawdata = rawdata;
 
   // construct the default home bounds from the data
-  let datar = DATA.rawdata.filter(function(d) { return d.era == "financing" });
+  let datar = DATA.rawdata.filter(function(d) { return d.fin_status == "financing" });
   let lats1 = datar.map(function(d) { return +d.target_country_lat });
   let lats2 = datar.map(function(d) { return +d.source_lat });
   let lats = lats1.concat(lats2);
@@ -544,7 +544,7 @@ function initSearch() {
   });
 }
 
-// Set up the search terms. These are set once on the era filtered data, and refreshed whenever changing era filter, units filter or domestic filter (but not other filters and toggles)
+// Set up the search terms. These are set once on the fin_statusfiltered data, and refreshed whenever changing fin_statusfilter, units filter or domestic filter (but not other filters and toggles)
 function initSearchTerms() {
   // create a list of projects in the data format needed by the search input
   let projects = [...new Set(DATA.filtered.map(d => d.project_name))];
@@ -593,9 +593,9 @@ function initSearchTerms() {
 
 // init selects and other search widgets, toggles etc. 
 function initSelects() {
-  // These first two filters (era and units) are "primary" filters, with slightly different behavior from the other selects
+  // These first two filters (fin_statusand units) are "primary" filters, with slightly different behavior from the other selects
 
-  // The finance era select
+  // The finance fin_statusselect
   $("select#era-select").select2({
     placeholder: "Select a status",
     minimumResultsForSearch: -1,
@@ -678,7 +678,7 @@ function initSelects() {
     minimumResultsForSearch: -1,
     dropdownCssClass: "close-year-select2",
     allowClear: true,
-    disabled: true, // disabled by default, until era changes to "closed" (see above)
+    disabled: true, // disabled by default, until fin_statuschanges to "closed" (see above)
   }).on("change", function() {
     // Prepare and draw everything
     prepareMapAndCharts({rescale: "no"}); 
@@ -807,8 +807,8 @@ function prepareMapAndCharts(args={}) {
   }
 
   // Filtering setup
-  // get the selected era from the checkbox at top right of the map and filter the data for it
-  let era = $("select#era-select").val();
+  // get the selected fin_statusfrom the checkbox at top right of the map and filter the data for it
+  let fin_status = $("select#era-select").val();
 
   // get the selected finance type from the dropdown
   let finance_type = $("select#finance_type").val();
@@ -829,8 +829,8 @@ function prepareMapAndCharts(args={}) {
   // Country, financer, project and handled by key/value settings
   // Units is simply for display, not filtering
   DATA.filtered = data.filter(function(d) {
-    // era filter
-    if (d.era != era) return false;
+    // fin_status filter
+    if (d.fin_status != fin_status ) return false;
 
     // finance type filter: multiple
     if (finance_type.length) {
