@@ -90,7 +90,7 @@ CONFIG.first_load = true;
 $(document).ready(function () {
 
   // data initialization first, then the remaining init steps
-  Promise.all([initData('./data/coal-finance-gi-map 2024-10-28.csv'), initData('./data/countries.json')])
+  Promise.all([initData('.data/gcpft_map_2025_april_18.csv'), initData('./data/countries.json')])
     .then(function(data) {
       initDataFormat(data);    // get data ready for use
       initLeafletShims();      // Leaflet extensions and shims
@@ -168,6 +168,7 @@ function initDataFormat(data) {
     if (d.finance_type === "" || d.finance_type === "n/a") d.finance_type = "unknown";
     d.megawatts = +d.megawatts; 
     d.dollars = isNaN(d.dollars) ? 0 : +d.dollars // attempt to clean bad values from dollars (e.g. N/A), and also convert to integer
+    console.log(d) //NEW
     rawdata.push(d);
 
     // collect close year for use in a year filter
