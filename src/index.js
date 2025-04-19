@@ -90,7 +90,7 @@ CONFIG.first_load = true;
 $(document).ready(function () {
 
   // data initialization first, then the remaining init steps
-  Promise.all([initData('./data/gcpft_map_2025_april_18.csv'), initData('./data/countries.json')])
+  Promise.all([initData('./data/coal-finance-gi-map 2024-10-28.csv'), initData('./data/countries.json')])
     .then(function(data) {
       initDataFormat(data);    // get data ready for use
       initLeafletShims();      // Leaflet extensions and shims
