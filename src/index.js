@@ -90,7 +90,7 @@ CONFIG.first_load = true;
 $(document).ready(function () {
 
   // data initialization first, then the remaining init steps
-  Promise.all([initData('.data/gcpft_map_2025_april_18.csv'), initData('./data/countries.json')])
+  Promise.all([initData('./data/gcpft_map_2025_april_18.csv'), initData('./data/countries.json')])
     .then(function(data) {
       initDataFormat(data);    // get data ready for use
       initLeafletShims();      // Leaflet extensions and shims
@@ -398,6 +398,7 @@ function initMap() {
   }).addTo(CONFIG.map);
 
   // Fit the map to the homebounds 
+  console.log(CONFIG.map)
   CONFIG.map.fitBoundsWithOffset(CONFIG.homebounds); 
 
   // add the one and only basemap, and labels
