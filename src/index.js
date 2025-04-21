@@ -497,7 +497,7 @@ function initSearch() {
       var match = CONFIG.filter.display;
       var type = CONFIG.filter.group;
       switch (type) {
-        case "Source Country": 
+        case "Source Country/Area": 
           prepareMapAndCharts({
             type: "source",
             targettype: "project",
@@ -507,7 +507,7 @@ function initSearch() {
             rescale: "no"
           });
           break; 
-        case "Recipient Country":
+        case "Recipient Country/Area":
           prepareMapAndCharts({
             type: "target",
             targettype: "project",
@@ -576,8 +576,8 @@ function initSearchTerms() {
 
   // Setup the search data
   let search_data = {
-    "Source Country": { data: source_search },
-    "Recipient Country": { data: target_search },
+    "Source Country/Area": { data: source_search },
+    "Recipient Country/Area": { data: target_search },
     "Financier": { data: financer_search},
     "Project": { data: project_search},
     // TO DO: given time and data
@@ -897,7 +897,7 @@ function prepareMapAndCharts(args={}) {
     // Draw the map, charts, sidebar, etc.
     let fitmap = true;
     drawMap(nodes, links, "country", fitmap);
-    drawLegend({source: "Financing Country", target: "Recipient Country"});
+    drawLegend({source: "Financing Country/Area", target: "Recipient Country/Area"});
     drawGlobalSidebar(nodes);
     drawPieChart();
   } else {
@@ -1324,8 +1324,8 @@ function drawCountrySidebar(args) {
   $("div#sidebar div.country-title div.name").text(value);
   
   // Update the label below the country or project name
-  var text = "Financing Country";
-  if (type == "target") text = "Recipient Country";
+  var text = "Financing Country/Area";
+  if (type == "target") text = "Recipient Country/Area";
   if (key == "financer") text = "Financier";
   if (key == "target" && targettype == "project") text = "Recipient Project";
   $("div#sidebar div.country-label").text(text);
@@ -1782,7 +1782,7 @@ function drawSourceCircles(nodes, color) {
     // select them again, goofy, I know, but we want to get both the enter() and update sets
     let current_source_circs = CONFIG.circlelayer.selectAll("circle.source")
       .on("mouseover", function(d) {
-        let text = `Financing Country: ${d.id}`;
+        let text = `Financing Country/Area: ${d.id}`;
         text += "<br>";
         text += CONFIG.units == "megawatts" ? "Capacity: " : "Funding: ";
         text += CONFIG.format[CONFIG.units](d.properties.aggregate_outflows);

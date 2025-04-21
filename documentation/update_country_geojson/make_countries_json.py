@@ -29,8 +29,8 @@ precision = 3
 simplification = 0.009
 
 # file names
-infile = '../../data/data.csv'
-lookupfile = 'country_lookup.csv'
+infile = '/Users/gem-tah/GEM_INFO/GEM_WORK/maps/coal-finance-main/data/gcpft_map_2025_april_18.csv'
+lookupfile = '/Users/gem-tah/GEM_INFO/GEM_WORK/maps/coal-finance-main/documentation/update_country_geojson/country_lookup.csv'
 worldjson = 'world.json'
 outjson = 'countries.json'
 
@@ -38,12 +38,12 @@ def run():
 
     # open the data file, and get a unique list of all countries
     raw = []
-    with open(infile, 'rt', encoding='utf-8') as file:
+    with open(infile, 'rt', encoding='utf-16') as file:
         reader = csv.DictReader(file)
         for row in reader:
             # some of these are not countries at all! skip...
-            if row['country'] not in ['', '#N/A', 'N/A', 'Bangladesh/China']:
-                raw.append(row['country']) # target countries
+            if row['country/area'] not in ['', '#N/A', 'N/A', 'Bangladesh/China']:
+                raw.append(row['country/area']) # target countries
             if row['source'] not in ['', '#N/A', 'N/A', 'ABSA Bank', 'corporate', 'International', 'Bangladesh/China']:
                 raw.append(row['source'])  # source countires
 
@@ -60,9 +60,12 @@ def run():
 
     # iterate over the data_countries, looking for a match in the lookup, noting any errors 
     matches = []
+    errors = False
+    special_countries = ['Pakistan / Iran', 'Not found', 'International', 'Corporate']
     for country in data_countries: 
-        errors = False
-        match = lookup[country]
+        if country in special_countries:
+            continue  # skip special countries
+        match = lookup.get(country)
 
         if not match: 
             errors = True
