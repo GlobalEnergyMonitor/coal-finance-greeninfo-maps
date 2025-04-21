@@ -90,7 +90,7 @@ CONFIG.first_load = true;
 $(document).ready(function () {
 
   // data initialization first, then the remaining init steps
-  Promise.all([initData('./data/coal-finance-gi-map 2024-10-28.csv'), initData('./data/countries.json')])
+  Promise.all([initData('./data/gcpft_map_2025_april_18.csv'), initData('./data/countries.json')])
     .then(function(data) {
       initDataFormat(data);    // get data ready for use
       initLeafletShims();      // Leaflet extensions and shims
@@ -178,6 +178,7 @@ function initDataFormat(data) {
 
   // keep a reference to this geojson in DATA
   DATA.rawdata = rawdata;
+  console.log(DATA.rawdata)
 
   // construct the default home bounds from the data
   let datar = DATA.rawdata.filter(function(d) { return d.fin_status == "financing" });
@@ -191,13 +192,14 @@ function initDataFormat(data) {
   let xmax = d3.max(lngs);
   let ymin = d3.min(lats);
   let ymax = d3.max(lats);
-  // console.log(datar)
-  // console.log(ymin)
-  // console.log(xmin)
-  // console.log(ymax)
-  // console.log(xmax)
+  console.log(datar)
+  console.log(ymin)
+  console.log(xmin)
+  console.log(ymax)
+  console.log(xmax)
 
   CONFIG.homebounds = [[ymin, xmin],[ymax, xmax]];
+  console.log(CONFIG.homebounds)
 
   // organize data according to two different target concepts: targets as country centoids, and targets as projects
   DATA.target_countries = []; 
@@ -398,7 +400,7 @@ function initMap() {
   }).addTo(CONFIG.map);
 
   // Fit the map to the homebounds 
-  console.log(CONFIG.map)
+  console.log(CONFIG.homebounds);
   CONFIG.map.fitBoundsWithOffset(CONFIG.homebounds); 
 
   // add the one and only basemap, and labels
