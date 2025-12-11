@@ -47,12 +47,12 @@ CONFIG.sidebarwidth = styles.sidebarwidth * 1; // cast as number
 
 // Pie chart colors
 CONFIG.piechart_colors = {
-  "Privately-owned commercial": "#7a9e9f",
+  "Private-owned commercial": "#7a9e9f",
   "Governmental policy": "#eef5db",
-  "Government-owned commercial": "#4f6367",
+  "Government-owned commercial": "#cecece",
   // "To be determined": "#90ed7d",
-  "Joint venture": "#90ed7d",
-  "Not found": "#cecece",
+  // "Joint venture": "#90ed7d",
+  "Not found": "#4f6367",
 }
 
 CONFIG.format = {
