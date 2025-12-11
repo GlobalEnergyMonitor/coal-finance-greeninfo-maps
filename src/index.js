@@ -47,12 +47,12 @@ CONFIG.sidebarwidth = styles.sidebarwidth * 1; // cast as number
 
 // Pie chart colors
 CONFIG.piechart_colors = {
-  "Privately-owned commercial institution": "#7a9e9f",
-  "Governmental policy institution": "#eef5db",
-  "Government-owned commercial institution": "#4f6367",
+  "Privately-owned commercial": "#7a9e9f",
+  "Governmental policy": "#eef5db",
+  "Government-owned commercial": "#4f6367",
   // "To be determined": "#90ed7d",
   "Joint venture": "#90ed7d",
-  "Unknown": "#cecece",
+  "Not found": "#cecece",
 }
 
 CONFIG.format = {
@@ -90,7 +90,7 @@ CONFIG.first_load = true;
 $(document).ready(function () {
 
   // data initialization first, then the remaining init steps
-  Promise.all([initData('./data/gcpft_map_2025_april_2025-04-25.csv'), initData('./data/countries.json')])
+  Promise.all([initData('./data/gcpft_map_2025_dec_2025-12-11.csv'), initData('./data/countries.json')])
     .then(function(data) {
       initDataFormat(data);    // get data ready for use
       initLeafletShims();      // Leaflet extensions and shims
@@ -168,7 +168,7 @@ function initDataFormat(data) {
     if (d.finance_type === "" || d.finance_type === "n/a") d.finance_type = "unknown";
     d.megawatts = +d.megawatts; 
     d.dollars = isNaN(d.dollars) ? 0 : +d.dollars // attempt to clean bad values from dollars (e.g. N/A), and also convert to integer
-    console.log(d) //NEW
+    // console.log(d) //NEW
     rawdata.push(d);
 
     // collect close year for use in a year filter
@@ -178,7 +178,7 @@ function initDataFormat(data) {
 
   // keep a reference to this geojson in DATA
   DATA.rawdata = rawdata;
-  console.log(DATA.rawdata)
+  // console.log(DATA.rawdata)
 
   // construct the default home bounds from the data
   let datar = DATA.rawdata.filter(function(d) { return d.fin_status == "financing" });
@@ -192,14 +192,14 @@ function initDataFormat(data) {
   let xmax = d3.max(lngs);
   let ymin = d3.min(lats);
   let ymax = d3.max(lats);
-  console.log(datar)
-  console.log(ymin)
-  console.log(xmin)
-  console.log(ymax)
-  console.log(xmax)
+  // console.log(datar)
+  // console.log(ymin)
+  // console.log(xmin)
+  // console.log(ymax)
+  // console.log(xmax)
 
   CONFIG.homebounds = [[ymin, xmin],[ymax, xmax]];
-  console.log(CONFIG.homebounds)
+  // console.log(CONFIG.homebounds)
 
   // organize data according to two different target concepts: targets as country centoids, and targets as projects
   DATA.target_countries = []; 
@@ -400,7 +400,7 @@ function initMap() {
   }).addTo(CONFIG.map);
 
   // Fit the map to the homebounds 
-  console.log(CONFIG.homebounds);
+  // console.log(CONFIG.homebounds);
   CONFIG.map.fitBoundsWithOffset(CONFIG.homebounds); 
 
   // add the one and only basemap, and labels
@@ -538,7 +538,7 @@ function initSearch() {
           })
           break;
         default:
-          console.log("Search type undefined, that shouldn't happen");
+          // console.log("Search type undefined, that shouldn't happen");
           prepareMapAndCharts();
       }
 
