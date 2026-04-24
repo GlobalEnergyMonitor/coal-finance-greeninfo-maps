@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 60" role="img" aria-label="Global Energy Monitor">
+  <style>
+    .gem-wordmark { font-family: 'Plus Jakarta Sans', 'Helvetica Neue', Arial, sans-serif; font-weight: 700; fill: #002430; }
+    .gem-tag { font-family: 'Barlow Semi Condensed', 'Helvetica Neue', Arial, sans-serif; font-weight: 500; fill: #002430; letter-spacing: 1px; }
+  </style>
+  <rect width="360" height="60" fill="none"/>
+  <text class="gem-wordmark" x="0" y="28" font-size="26">GEM</text>
+  <text class="gem-tag" x="0" y="50" font-size="13">GLOBAL ENERGY MONITOR</text>
+</svg>

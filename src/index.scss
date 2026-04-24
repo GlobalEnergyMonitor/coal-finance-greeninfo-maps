@@ -13,14 +13,17 @@
 /* manage global CSS vars here */
 
 
-/* colors */
-$highlight-color: #f2e360;
-$blue: #14284b; /* header color */
-$targetcolor: #00b9f1; /* blue circle color */
-$sourcecolor: #ef572e; /* red circle color */
-$sourcecolor-hover: #d93b11;
-$search-button-color: #6c6c6c;
-$country-color: #ff605c;
+/* colors — 2026 GEM brand refresh */
+$highlight-color: #FE4F2D;      /* orange pop */
+$blue: #002430;                 /* midnight (header) */
+$targetcolor: #4A57A8;          /* indigo — target */
+$sourcecolor: #7F142A;          /* deep red — coal finance source */
+$sourcecolor-hover: darken(#7F142A, 8%);
+$search-button-color: #3A4A50;  /* text grey family */
+$country-color: #016B83;        /* teal */
+$text-grey: #3A4A50;
+$panel-bg: #F2F2EB;             /* warm white */
+$border-color: #BECCCF;
 
 /* sidebar */
 $sidebarwidth: 415px;
@@ -64,11 +67,15 @@ $circleopacity: 0.85;
 
 * { padding: 0; margin: 0; outline: 0; }
 /* hide overflow, otherwise d3 Rs will cause scroll bars */
-html, body { 
+html, body {
   padding: 0; margin: 0;
-  height: 100%; 
-  font-family: 'Open Sans', sans-serif; 
+  height: 100%;
+  font-family: 'Barlow Semi Condensed', sans-serif;
   overflow: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 div#container {
@@ -87,6 +94,18 @@ div#map {
   height: 100%;
 }
 
+/* GEM brand logo, bottom-right of map (above Leaflet attribution) */
+img#gem-logo {
+  position: absolute;
+  bottom: 20px;
+  right: 10px;
+  width: 120px;
+  height: auto;
+  z-index: 1000;
+  pointer-events: none;
+  user-select: none;
+}
+
 /* SEARCH */
 div#search-wrapper {
   z-index: 9999;
@@ -102,17 +121,17 @@ div#search-wrapper {
     padding: 4px 29px 4px 11px;
   }
   
-  ul.typeahead__list>.typeahead__group:first-child, 
+  ul.typeahead__list>.typeahead__group:first-child,
   ul.typeahead__list>li.typeahead__group+li.typeahead__item {
-    border-color: #dadfe6;
+    border-color: $border-color;
   }
 
-  ul.typeahead__list>.typeahead__group.active>a, 
-  ul.typeahead__list>.typeahead__group>a, 
-  ul.typeahead__list>.typeahead__group>a:focus, 
+  ul.typeahead__list>.typeahead__group.active>a,
+  ul.typeahead__list>.typeahead__group>a,
+  ul.typeahead__list>.typeahead__group>a:focus,
   ul.typeahead__list>.typeahead__group>a:hover {
-    background: #dadfe6;
-    color: #555;
+    background: $border-color;
+    color: $text-grey;
     font-weight: normal;
   }
 
@@ -180,7 +199,7 @@ div.panel-toggle {
   span {
     color: #fff;
     cursor: pointer;
-    background: #6c6c6c;
+    background: $text-grey;
     display: inline-block;
     padding: 4px 10px;
 
@@ -198,7 +217,7 @@ div#filter-outer {
   width: auto;
   height: auto;
   z-index: 9999;
-  background: #9e9e9e;
+  background: $panel-bg;
 
   div#select-wrapper {
     background: #fff;
@@ -252,11 +271,11 @@ div#filter-outer {
     color: #fff;
     text-align: center;
     display: flex;
-    justify-content: center;  
+    justify-content: center;
     span {
-      cursor: pointer;  
+      cursor: pointer;
       display: inline-block;
-      background: #6c6c6c;
+      background: $text-grey;
       padding: 4px 8px;
     }
   }
@@ -270,7 +289,7 @@ div#chart-wrapper {
   left: $sidebarwidth + 10;
   bottom: 15px;
   z-index: 9997;
-  background: rgb(158 158 158);
+  background: $panel-bg;
 
   div#chart {
     width: 270px;
@@ -499,7 +518,7 @@ div#sidebar {
   }
 
   div.sidebar-content {
-    color: #444;
+    color: $text-grey;
     background: #fff;
 
     div.results {
@@ -549,7 +568,7 @@ div#sidebar {
             color: #222;
           }
           div.units-label {
-            color: #555;
+            color: $text-grey;
             display: inline-block;
             margin-left: 5px;
             &.cancelled {
@@ -557,7 +576,7 @@ div#sidebar {
             }
           }
           div.name-label {
-            color: #888;
+            color: $text-grey;
             margin-top: -1px;
             margin-bottom: 2px;
             line-height: 1.25;
@@ -583,7 +602,7 @@ div#sidebar {
       }
 
       div.target-panel {
-        border-top: 1px solid #ccc;
+        border-top: 1px solid $border-color;
         margin-top: 1em;
         padding-top: 0.5em;
         div.results {
@@ -643,7 +662,7 @@ div#sidebar {
       }
 
       div.projects {
-        border-top: 1px solid #ccc;
+        border-top: 1px solid $border-color;
         margin-top: 1em;
         padding-top: 0.5em;
         div.results {
@@ -666,7 +685,7 @@ div#sidebar {
 
             div.unit-details {
               margin-bottom: 10px;
-              border: 1px solid #00b9f1;
+              border: 1px solid $targetcolor;
               padding: 0.5em 1em;
               border-radius: 6px;
               font-size: 15px;
@@ -711,7 +730,7 @@ div#sidebar {
       div.projects {
         margin-top: 0.5em;
         padding-top: 0.5em;
-        border-top: 1px solid #ccc;
+        border-top: 1px solid $border-color;
       }
 
     } /* country-content */
@@ -736,7 +755,7 @@ div#sidebarHamburger a {
   line-height: 22px;
   padding: 4px 8px;
   display: inline-block;
-  color: #666;
+  color: $text-grey;
     &:hover {
       background-color: #f4f4f4;
       border-radius:5px;
