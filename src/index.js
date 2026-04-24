@@ -29,7 +29,7 @@ CONFIG.mapPad = 20;
 CONFIG.country_style = { stroke: true, color: '#666', opacity: 1, weight: 0.5, fillColor: styles.countrystyle, fillOpacity: 0.1 };
 // feature highlight styles, shows below features on hover or click
 CONFIG.feature_hover_style  = { color: '#fff5a3', fillOpacity: 1, stroke: true, weight: 13, opacity: 1 };
-CONFIG.feature_select_style = { color: '#f2e360', fillOpacity: 1, stroke: true, weight: 13, opacity: 1 };
+CONFIG.feature_select_style = { color: styles.highlight_color, fillOpacity: 1, stroke: true, weight: 13, opacity: 1 };
 
 // Spatial-sankey config for options, svg styles, etc.
 CONFIG.minradius = 10; // min size in pixels, for a scaled point
@@ -45,14 +45,13 @@ CONFIG.link_flow_range = {};
 // Sidebar and other element constants
 CONFIG.sidebarwidth = styles.sidebarwidth * 1; // cast as number
 
-// Pie chart colors
+// Pie chart colors — institution-type categorical breakdown.
+// Uses the 2026 GEM neutral grey ramp (institutional categories are non-semantic).
 CONFIG.piechart_colors = {
-  "Private-owned commercial": "#7a9e9f",
-  "Governmental policy": "#eef5db",
-  "Government-owned commercial": "#cecece",
-  // "To be determined": "#90ed7d",
-  // "Joint venture": "#90ed7d",
-  "Not found": "#4f6367",
+  "Private-owned commercial":    "#4c6267",
+  "Government-owned commercial": "#6e8c91",
+  "Governmental policy":         "#BECCCF",
+  "Not found":                   "#dce3e5",
 }
 
 CONFIG.format = {
@@ -1036,7 +1035,7 @@ function drawPieChart() {
     legend: {
       itemStyle: {
         textOverflow: null,
-        fontFamily: "Open Sans"
+        fontFamily: "'Barlow Semi Condensed', sans-serif"
       },
       style: {
         fontSize: "13px",
@@ -1048,7 +1047,7 @@ function drawPieChart() {
       margin: 10,
       style: {
         fontSize: "13px",
-        fontFamily: "Open Sans"
+        fontFamily: "'Barlow Semi Condensed', sans-serif"
       }
     },
     tooltip: {
