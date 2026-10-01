@@ -21,6 +21,9 @@ const DATA = {};
 CONFIG.minzoom = 2;
 CONFIG.maxzoom = 15;
 
+// CARTO basemaps API key (required since Sept 2026), see https://carto.com/basemaps/apikey
+CONFIG.carto_key = 'cb1_46ei_1_7925f5c95c3ffd46883636e6';
+
 // pad the map extent by this much, in addition to the sidebar padding, see fitBoundsWithOffset()
 CONFIG.mapPad = 20; 
 
@@ -404,8 +407,8 @@ function initMap() {
   CONFIG.map.fitBoundsWithOffset(CONFIG.homebounds); 
 
   // add the one and only basemap, and labels
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}' + (L.Browser.retina ? '@2x.png' : '.png'), { pane: 'basemap' }).addTo(CONFIG.map);
-  L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_only_labels/{z}/{x}/{y}' + (L.Browser.retina ? '@2x.png' : '.png'), { pane: 'basemap-labels' }).addTo(CONFIG.map);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}' + (L.Browser.retina ? '@2x.png' : '.png') + '?key=' + CONFIG.carto_key, { pane: 'basemap' }).addTo(CONFIG.map);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}' + (L.Browser.retina ? '@2x.png' : '.png') + '?key=' + CONFIG.carto_key, { pane: 'basemap-labels' }).addTo(CONFIG.map);
 
   // init the svg layer for D3
   var svglayer = L.svg();
